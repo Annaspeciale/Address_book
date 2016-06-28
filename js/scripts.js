@@ -18,5 +18,14 @@ $(document).ready(function() {
 
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
+
+    $(".contact").last().click(function() {
+      $("#show-contact h2").text(newContact.firstName);
+      $(".first-name").text(newContact.firstname);
+      $(".last-name").text(newContact.lastName);
+      $("#show-contact").show();
+    });
   });
+
+
 });

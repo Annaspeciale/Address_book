@@ -5,20 +5,40 @@ function Contact(first, last) {
   this.addresses = [];
 }
 
-function Addresses(street, city, state) {
+Contact.prototype.fullName = function() {
+  return this.firstName + " " + this.lastName;
+}
+
+function Addresses(addressType, street, city, state) {
+  this.addressType = addressType;
   this.street = street;
   this.city = city;
   this.state = state;
 }
 
-Contact.prototype.fullName = function() {
-  return this.firstName + " " + this.lastName;
+Addresses.prototype.fullAddress = function() {
+  return this.street + ", " + this.city + ", " + this.state
+};
+
+function resetFields() {
+  $("input#new-first-name").val("");
+  $("input#new-last-name").val("");
+  $("input#street").val("");
+  $("input#city").val("");
+  $("input#state").val("");
 }
+
 // user interface logic
 $(document).ready(function() {
 
   $("#add-address").click(function() {
     $("#new-addresses").append(
+      '<div class="form-group">' +
+        '<label for="address-type">Home address</label>' +
+        '<input type="radio" name="address" id="home-address" checked>' +
+        '<label for="address-type">Work address</label>' +
+        '<input type="radio" name="address" id="work-address">' +
+      '</div>' +
     '<div class="new-address">' +
       '<div class="form-group">'  +
         '<label for="street">Street</label>' +
@@ -43,10 +63,11 @@ $(document).ready(function() {
     var newContact = new Contact(inputtedFirstName, inputtedLastName);
 
     $(".new-address").each(function() {
+      var inputtedAddressType = $(this).find("input:radio[name=address]:checked").val();
       var inputtedStreet = $(this).find("input#street").val();
       var inputtedCity = $(this).find("input#city").val();
       var inputtedState = $(this).find("input#state").val();
-      var newAddress = new Addresses(inputtedStreet, inputtedCity, inputtedState);
+      var newAddress = new Addresses(inputtedAddressType, inputtedStreet, inputtedCity, inputtedState);
       newContact.addresses.push(newAddress);
       console.log(newContact);
     });
@@ -63,13 +84,9 @@ $(document).ready(function() {
       $(".last-name").text(newContact.lastName);
       $("ul#addresses").text("");
       newContact.addresses.forEach(function(address) {
-        $("ul#addresses").append("<li>" + address.street + " " + address.city + " " + address.state + "</li>");
+        $("ul#addresses").append("<li>" + address.addressType + "<ul id='no-bullet'><li>" + address.fullAddress() + "</li></ul>" + "</li>");
       });
     });
-    $("input#new-first-name").val("");
-    $("input#new-last-name").val("");
-    $("input#street").val("");
-    $("input#city").val("");
-    $("input#state").val("");
+    resetFields();
   });
 });

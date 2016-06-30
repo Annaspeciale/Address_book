@@ -1,10 +1,17 @@
 //business logic
-function Contact(first, last, address, phoneNumber) {
+function Contact(first, last) {
   this.firstName = first;
   this.lastName = last;
-  this.address = address;
-  this.phoneNumber = phoneNumber;
+  this.addresses = [];
+
 }
+
+function Addresses(street, city, state) {
+  this.street = street;
+  this.city = city;
+  this.state = state;
+}
+
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
@@ -15,24 +22,19 @@ $(document).ready(function() {
 
     var inputtedFirstName = $("input#new-first-name").val();
     var inputtedLastName = $("input#new-last-name").val();
-    var inputtedaddress = $("input#new-address").val();
-    var inputtedphoneNumber = $("input#new-phoneNumber").val();
 
-    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedaddress, inputtedphoneNumber);
+
+    var newContact = new Contact(inputtedFirstName, inputtedLastName);
 
     $("ul#contacts").append("<li><span class='contact'>" + newContact.fullName() + "</span></li>");
 
     $("input#new-first-name").val("");
     $("input#new-last-name").val("");
-    $("input#new-address").val("");
-    $("input#new-phoneNumber").val("");
 
     $(".contact").last().click(function() {
       $("#show-contact h2").text(newContact.firstName);
       $(".first-name").text(newContact.firstName);
       $(".last-name").text(newContact.lastName);
-      $(".address").text(newContact.address);
-      $(".phoneNumber").text(newContact.phoneNumber);
       $("#show-contact").show();
     });
   });
